@@ -113,8 +113,69 @@ void printBill()
 
             cout << "\tEnter Item: ";
             cin >> item;
+
+            cout << "\tEnter Quantity: ";
+            cin >> quant;
+
+            ifstream in("../Bill.txt");
+            ofstream out("../Bill_Temp.txt");
+
+            string line;
+            bool found = false;
+
+            while(getline(in, line))
+            {
+                stringstream ss;
+                ss << line;
+                string itemName;
+                int itemRate, itemQuant;
+                char delimiter;
+
+                ss >> itemName >> delimiter >> itemRate >> delimiter >> itemQuant;
+
+                if(item == itemName)
+                {
+                    found = true;
+                    if(quant <= itemQuant)
+                    {
+                        int amount = itemRate * quant;
+                        cout << "\t Item | Rate | Quantity | Amount" << endl;
+                        cout << "\t" << itemName << "\t " << itemRate <<"\t " << quant << "\t " << amount << endl;
+                        int newQuant = itemQuant - quant;
+                        itemQuant = newQuant;
+                        count += amount;
+
+                        out << "\t" << itemName << " : " << itemRate << " : " << itemQuant << endl;
+                    }else
+                    {
+                        cout << "\tSorry, " << item << " Ended!" << endl;
+                    }
+                }else{
+                    out << line << endl;
+                }
+            }
+
+            if(!found)
+            {
+                cout << "\tItem Not Available!" << endl;
+            }
+            out.close();
+            in.close();
+            remove("../Bill.txt");
+            rename("../Bill_Temp.txt", "../Bill.txt");
+        }else if(choice == 2)
+        {
+            close = true;
+            cout << "\tCounting Total Bill" << endl;
         }
+        sleep(3);
     }
+
+    system("clear");
+    cout <<endl <<endl;
+    cout << "\t Total Bill ----------------- : " << count << endl << endl;
+    cout << "\tThanks For Shopping!" << endl;
+    sleep(5);
 }
 
 int main()
@@ -146,6 +207,8 @@ int main()
         if(val == 3)
         {
             exit = true;
+            cout << "\tThanks, see you soon!" << endl;
+            sleep(3);
         }
     }
 
