@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <cstdlib>
+#include <unistd.h>
 using namespace std;
 
 class Bill
@@ -51,7 +52,7 @@ void addItem(Bill b)
         int choice;
         cout << "\t1. Add" << endl;
         cout << "\t2. Close" << endl;
-        cout << "\tEnter Choice: " << endl;
+        cout << "\tEnter Choice: ";
         cin  >> choice;
 
         if(choice == 1)
@@ -68,7 +69,7 @@ void addItem(Bill b)
             b.setRate(rate);
 
             cout << "\tEnter Quantity of Item: ";
-            cin >> rate;
+            cin >> quant;
             b.setQuant(quant);
 
             ofstream out("../Bill.txt", ios::app); // append mode
@@ -81,6 +82,37 @@ void addItem(Bill b)
             }
             out.close();
             cout << "\tItem Added Successfuly" << endl;
+            sleep(2);
+        }else if(choice == 2)
+        {
+            system("clear");
+            close = true;
+            cout << "\tBack to Main Menu" << endl;
+            sleep(3);
+        }
+    }
+}
+
+void printBill()
+{
+    int count = 0;
+    bool close = false;
+    while(!close)
+    {
+        system("clear");
+        int choice;
+        cout << "\t1. Add Bill." << endl;
+        cout << "\t2. Close Session." << endl;
+        cout << "\tEnter Choice: ";
+        cin  >> choice;
+
+        if(choice == 1)
+        {
+            string item;
+            int quant;
+
+            cout << "\tEnter Item: ";
+            cin >> item;
         }
     }
 }
@@ -89,10 +121,7 @@ int main()
 {
     Bill b;
 
-    std::cout << "Hello world!\n";
-
     bool exit = false;
-
     while(!exit)
     {
         system("clear");
@@ -103,12 +132,15 @@ int main()
         cout << "\t\t1. Add Item" << endl;
         cout << "\t\t2. Print Bill" << endl;
         cout << "\t\t3. Exit" << endl;
-        cout << "\t\tEnter Choice" << endl;
+        cout << "\t\tEnter Choice: ";
         cin >> val;
 
         if(val == 1)
         {
-
+            addItem(b);
+        }else if(val == 2)
+        {
+            printBill();
         }
 
         if(val == 3)
